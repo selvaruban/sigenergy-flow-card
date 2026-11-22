@@ -49,7 +49,9 @@ EXTRA_TOP, ROWS = 44, 557
 # Must match PHOTO.top + PHOTO.bleed and PHOTO.bottom + PHOTO.bleed in the card.
 TOP, BOTTOM = 156, 160
 # (pixels per unit, x offset, y offset in pixels) of each photo against the first photo's frame.
-REGISTRATION = {'house_day.png': (1.2941, 0.1, 60.5), 'house_night.png': (1.2887, -1.1, 57.4)}
+# Custom house photo: the saved images are already in the 1676x557 card frame (a centre crop of the user's photo),
+# so no rescaling is needed. The y offset of 44 px (= EXTRA_TOP) aligns the photo's first row with the frame's top.
+REGISTRATION = {'house_day.png': (1.0, 0, 44), 'house_night.png': (1.0, 0, 44)}
 # Height of the charger (units), its centre x and its top y in the first photo's frame.
 CHARGER_REFERENCE = {'charger_day.png': (76, 458.0, 245), 'charger_night.png': (77, 457.5, 245)}
 EDGE_ROWS = 6
