@@ -49,7 +49,7 @@ const CARS = [
 ];
 // Where the top and bottom fades (which keep the readings legible) end and start.
 const FADE = { topEnd: 140, bottomStart: 533 };
-const SCENE = { width: PHOTO.width, height: PHOTO.top + PHOTO.height + PHOTO.bottom, keep: [640, 1240], keepNarrow: [700, 1200], narrowBelow: 560, scale: 1 };
+const SCENE = { width: PHOTO.width, height: PHOTO.top + PHOTO.height + PHOTO.bottom, keep: [640, 1240], keepNarrow: [580, 1240], narrowBelow: 560, scale: 1 };
 // The user's own house photo replaces the stock artwork. The stock car, garage, charger and weather overlays were
 // drawn for the old house, so they are hidden; the AC charger's reading is kept and placed over the photo instead.
 const CUSTOM_SCENE = true;
@@ -260,7 +260,7 @@ const LEADERS = ['M900 88 V201', 'M710 88 V300 H760 V340', 'M830 590 H959', 'M10
 // SigenStor and GRID readings: the row's left edge, each reading's left edge, and the row's bottom edge.
 // [chargers] is the left edge of the charger readings, centred vertically on CHARGER_Y: [wide, narrow].
 // With the custom photo they sit above the car, to the right of the charger; 1120/1040 shift them right while
-// keeping the text inside the protected range at the narrowest width (wide [640,1240], narrow [700,1200]).
+// keeping the text inside the protected range at the narrowest width (wide [640,1240], narrow [580,1240]).
 const READINGS = {
     pv: [832, 16, 'top'],
     home: [640, 16, 'top'],
@@ -786,9 +786,9 @@ class SigenergyFlowCard extends HTMLElement {
       .node em.stack span{display:block}.node em.stack span+span::before{content:none}
       .compact .node em.lifetime:not(.stack) span{display:inline}.compact .node em.lifetime:not(.stack) span+span::before{content:' · '}
       .node em span+span::before{content:' · '}
-      ${CUSTOM_SCENE ? '.narrow .lead{transform:none;text-align:left}.narrow #homeLead{left:42.36% !important}' : '.narrow .lead{transform:translateX(calc(-100% - 24px * var(--s)));text-align:right}'}
+      ${CUSTOM_SCENE ? '.narrow .lead{transform:none;text-align:left}' : '.narrow .lead{transform:translateX(calc(-100% - 24px * var(--s)));text-align:right}'}
       .compact .sidecol .node{max-width:calc(430px * var(--s))}.narrow .sidecol .node{max-width:calc(230px * var(--s))}.compact .sidecol em{white-space:normal}
-      .compact .lower .node+.node{max-width:calc(260px * var(--s))}.narrow .lower .node+.node{max-width:calc(200px * var(--s))}.compact .lower em{white-space:normal}
+      .compact .lower .node+.node{max-width:calc(260px * var(--s))}.narrow .lower .node+.node{max-width:calc(260px * var(--s))}.compact .lower em{white-space:normal}
       .compact .node em span{display:block}.compact .node em span+span::before{content:none}
       .node.weather button{display:flex;align-items:center;gap:calc(10px * var(--s))}.weather svg{width:clamp(30px,calc(58px * var(--s)),62px);height:clamp(30px,calc(58px * var(--s)),62px);overflow:visible}
       .sidecol{position:absolute;top:50%;transform:translateY(-50%);z-index:2;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:max(14px,calc(24px * var(--s)));min-height:calc(184px * var(--s))}
