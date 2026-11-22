@@ -253,18 +253,19 @@ const GATEWAY_ENDS = { inverterFlow: 'end', homeFlow: 'start', gridFlow: 'start'
 // [speed][0] + [speed][1] × √(home kW), so everything runs quicker as the house uses more; [length] is in scene units.
 const PULSE = { speed: [110, 65], length: 130 };
 // Callouts: below the SOLAR label to the panels, straight down from the HOME label to the home flow,
-// up from the grid flow's end beside GRID, and straight down from the cabinet beside the SigenStor text.
-const LEADERS = ['M900 23 V201', 'M710 23 V340', 'M730 587 V495', 'M1017 468 V583'];
+// up from the grid flow's end beside GRID, straight down from the cabinet beside the SigenStor text, and up from
+// the AC charger beside its reading.
+const LEADERS = ['M900 23 V201', 'M710 23 V340', 'M730 587 V495', 'M1017 468 V583', 'M1068 364 V264'];
 // Reading positions: [x, y, edge], where y is the reading's top or bottom edge. [lower] places the
 // SigenStor and GRID readings: the row's left edge, each reading's left edge, and the row's bottom edge.
 // [chargers] is the left edge of the charger readings, centred vertically on CHARGER_Y: [wide, narrow].
 // With the custom photo they sit above the car, to the right of the charger; 1120/1040 shift them right while
 // keeping the text inside the protected range at the narrowest width (wide [640,1240], narrow [580,1240]).
 const READINGS = {
-    pv: [922, 16, 'top'],
-    home: [735, 16, 'top'],
+    pv: [927, 16, 'top'],
+    home: [740, 16, 'top'],
     lower: { left: 714, columns: [714, 1042], bottom: 588, start: 512 },
-    chargers: [1120, 1040],
+    chargers: [1175, 1095],
 };
 
 // Series colours are CSS variables so the day and night styles can each define their own.
@@ -656,7 +657,7 @@ class SigenergyFlowCard extends HTMLElement {
           <rect x="0" y="${-PHOTO.bleed}" width="${PHOTO.width}" height="${PHOTO.bleed + FADE.topEnd}" class="fadeRect" fill="url(#fadeTop)"/>
           <rect x="0" y="${FADE.bottomStart}" width="${PHOTO.width}" height="${SCENE.height - FADE.bottomStart + PHOTO.bleed}" class="fadeRect" fill="url(#fadeBottom)"/>
           <rect x="0" y="${-PHOTO.bleed}" width="520" height="${SCENE.height + 2 * PHOTO.bleed}" fill="url(#fadeLeft)"/>
-          ${LEADERS.map((d, i) => battery || i !== 3 ? `<path class="leader${i === 3 ? ' lowerLeader noDot' : i === 2 ? ' noDot' : ''}" data-d="${d}" d="${d}"/>` : '').join('')}
+          ${LEADERS.map((d, i) => battery || i !== 3 ? `<path class="leader${i === 3 ? ' lowerLeader noDot' : i === 2 || i === 4 ? ' noDot' : ''}" data-d="${d}" d="${d}"/>` : '').join('')}
           ${flows}
         </svg>
         <div class="node weather" id="weather" hidden><button id="weatherButton" title="Show the weather forecast"><span id="weatherIcon"></span><strong id="weatherTemp"></strong></button></div>
