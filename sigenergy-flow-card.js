@@ -240,7 +240,7 @@ const FLOWS = {
     solarFlow: 'M918 201 H945 Q955 201 955 211 V366',
     inverterFlow: 'M1010 392 H975',
     homeFlow: 'M943 392 H905 Q895 392 895 382 V350 Q895 340 885 340 H755',
-    gridFlow: 'M959 432 V600',
+    gridFlow: 'M965 420 V590',
 };
 // A branch continues its parent's animation from the point where it leaves the parent's path.
 const BRANCHES = {};
@@ -255,7 +255,7 @@ const PULSE = { speed: [110, 65], length: 130 };
 // Dashed callouts from each reading to the feature it describes: below the SOLAR label to the panels, below the
 // HOME label over the porch and down to its eave, across to GRID's line, and from the cabinet down and across to
 // the SigenStor text.
-const LEADERS = ['M900 88 V201', 'M710 88 V300 H760 V340', 'M830 540 H959', 'M1017 481 V545 H1027'];
+const LEADERS = ['M900 88 V201', 'M710 88 V300 H760 V340', 'M830 554 H965', 'M1017 481 V559 H1027'];
 // Reading positions: [x, y, edge], where y is the reading's top or bottom edge. [lower] places the
 // SigenStor and GRID readings: the row's left edge, each reading's left edge, and the row's bottom edge.
 // [chargers] is the left edge of the charger readings, centred vertically on CHARGER_Y: [wide, narrow].
@@ -264,7 +264,7 @@ const LEADERS = ['M900 88 V201', 'M710 88 V300 H760 V340', 'M830 540 H959', 'M10
 const READINGS = {
     pv: [832, 16, 'top'],
     home: [640, 16, 'top'],
-    lower: { left: 724, columns: [724, 1030], bottom: 572, start: 496 },
+    lower: { left: 724, columns: [724, 1030], bottom: 586, start: 510 },
     chargers: [1120, 1040],
 };
 
