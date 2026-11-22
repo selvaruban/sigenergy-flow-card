@@ -255,7 +255,7 @@ const PULSE = { speed: [110, 65], length: 130 };
 // Callouts: below the SOLAR label to the panels, straight down from the HOME label to the home flow,
 // up from the grid flow's end beside GRID, straight down from the cabinet beside the SigenStor text, and up from
 // the AC charger beside its reading.
-const LEADERS = ['M900 23 V201', 'M710 23 V340', 'M730 587 V495', 'M1017 468 V583', 'M1068 364 V264'];
+const LEADERS = ['M900 23 V201', 'M710 23 V340', 'M730 587 V498', 'M1017 468 V583', 'M1068 364 V267'];
 // Reading positions: [x, y, edge], where y is the reading's top or bottom edge. [lower] places the
 // SigenStor and GRID readings: the row's left edge, each reading's left edge, and the row's bottom edge.
 // [chargers] is the left edge of the charger readings, centred vertically on CHARGER_Y: [wide, narrow].
@@ -2147,13 +2147,14 @@ class SigenergyFlowCard extends HTMLElement {
           , rangeEntity = e('ac_charger_vehicle_range') ?? (this.config.entities?.ac_charger_vehicle_range === undefined ? this.config.ac_charger_range : null);
         const car = carEntity ? n(carEntity) : null
           , range = rangeEntity ? n(rangeEntity) : null
+          , rangeUnit = rangeEntity ? this._hass.states[rangeEntity]?.attributes?.unit_of_measurement : null
           , dcsoc = n(e('dc_charger_vehicle_soc'));
         // Sigenergy Local Modbus 2.0 stores keys (charging, not_connected) that Home Assistant labels in the user's language;
         // otherwise the state is already the label.
         const acEntity = this._hass.states[e('ac_charger_state')], acRaw = acEntity?.state
           , acLabel = acEntity && this._hass.formatEntityState ? this._hass.formatEntityState(acEntity) : acRaw
           , acState = acRaw && !['unknown', 'unavailable'].includes(acRaw) ? (acLabel && acLabel !== acRaw ? acLabel : acRaw.split('-')[0]) : '';
-        const carText = !carEntity ? '' : car === null ? 'Vehicle SOC unavailable' : `${car.toFixed(0)}%${range === null ? '' : ` · ${range.toFixed(0)} km`}`;
+        const carText = !carEntity ? '' : car === null ? 'Vehicle SOC unavailable' : `${car.toFixed(0)}%${range === null ? '' : ` · ${range.toFixed(0)} ${rangeUnit || 'km'}`}`;
         this._parts('acSoc', [acState, carText]);
         // The inverter reports 0% with no DC vehicle attached; a genuine 0% while charging is still shown.
         // Negative DC power is the vehicle supplying the house.
