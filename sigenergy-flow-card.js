@@ -255,16 +255,16 @@ const PULSE = { speed: [110, 65], length: 130 };
 // Dashed callouts from each reading to the feature it describes: below the SOLAR label to the panels, below the
 // HOME label over the porch and down to its eave, across to GRID's line, and from the cabinet down and across to
 // the SigenStor text.
-const LEADERS = ['M900 88 V201', 'M710 88 V300 H760 V340', 'M830 554 H965', 'M1017 481 V559 H1027'];
+const LEADERS = ['M900 88 V201', 'M710 88 V300 H760 V340', 'M830 556 H965', 'M1017 481 V561 H1027'];
 // Reading positions: [x, y, edge], where y is the reading's top or bottom edge. [lower] places the
 // SigenStor and GRID readings: the row's left edge, each reading's left edge, and the row's bottom edge.
 // [chargers] is the left edge of the charger readings, centred vertically on CHARGER_Y: [wide, narrow].
 // With the custom photo they sit above the car, to the right of the charger; 1120/1040 shift them right while
 // keeping the text inside the protected range at the narrowest width (wide [640,1240], narrow [580,1240]).
 const READINGS = {
-    pv: [832, 16, 'top'],
-    home: [640, 16, 'top'],
-    lower: { left: 724, columns: [724, 1030], bottom: 586, start: 510 },
+    pv: [857, 16, 'top'],
+    home: [670, 16, 'top'],
+    lower: { left: 724, columns: [724, 1030], bottom: 588, start: 512 },
     chargers: [1120, 1040],
 };
 
@@ -644,7 +644,6 @@ class SigenergyFlowCard extends HTMLElement {
             <linearGradient id="fadeBottom" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="fade" stop-opacity="0"/><stop offset=".45" class="fade" stop-opacity=".26"/><stop offset="1" class="fade" stop-opacity=".44"/></linearGradient>
             <linearGradient id="fadeLeft" x1="0" y1="0" x2="1" y2="0"><stop offset="0" class="fade" style="stop-opacity:var(--fade-left)"/><stop offset="1" class="fade" stop-opacity="0"/></linearGradient>
             <marker id="leaderDot" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse"><circle cx="3" cy="3" r="2.2" fill="var(--leader)"/></marker>
-            <marker id="gridArrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="8" markerHeight="8" orient="auto" markerUnits="userSpaceOnUse"><path d="M1.5 1.5 L8.5 5 L1.5 8.5" fill="none" stroke="var(--wire-on)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
           </defs>
           <image class="photo" href="${ARTWORK['house_day.png'].href}" x="0" y="${-PHOTO.bleed}" width="${SCENE.width}" height="${SCENE.height + 2 * PHOTO.bleed}" preserveAspectRatio="none"/>
           <image id="garageArt" display="none" href="${ARTWORK['garage_day.png'].href}" x="${ARTWORK['garage_day.png'].at[0]}" y="${PHOTO.top + ARTWORK['garage_day.png'].at[1]}" width="${ARTWORK['garage_day.png'].size[0]}" height="${ARTWORK['garage_day.png'].size[1]}" preserveAspectRatio="none"/>
@@ -769,7 +768,6 @@ class SigenergyFlowCard extends HTMLElement {
       .leader{fill:none;stroke:var(--leader);stroke-width:1;vector-effect:non-scaling-stroke;stroke-dasharray:3 5;stroke-linecap:round;opacity:.75;marker-end:url(#leaderDot)}
       .wire{fill:none;stroke:rgba(18,26,30,.4);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;transition:stroke .4s}
       .flow.active .wire{stroke:var(--wire-on)}
-      #gridFlow.active .wire{marker-end:url(#gridArrow)}
       .glow,.comet{fill:none;stroke:var(--comet);stroke-linecap:round;stroke-linejoin:round;display:none}
       .glow{stroke-width:9;opacity:.6}.comet{stroke-width:3.4;opacity:.3}
       .flow.active.moving .glow,.flow.active.moving .comet{display:inline}
