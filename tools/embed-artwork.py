@@ -47,7 +47,7 @@ WIDTH = 1676
 # The photo's rows, starting EXTRA_TOP units above the first photo's top row.
 EXTRA_TOP, ROWS = 44, 557
 # Must match PHOTO.top + PHOTO.bleed and PHOTO.bottom + PHOTO.bleed in the card.
-TOP, BOTTOM = 156, 110
+TOP, BOTTOM = 148, 100
 # (pixels per unit, x offset, y offset in pixels) of each photo against the first photo's frame.
 # Custom house photo: the saved images are already in the 1676x557 card frame (a centre crop of the user's photo),
 # so no rescaling is needed. The y offset of 44 px (= EXTRA_TOP) aligns the photo's first row with the frame's top.
