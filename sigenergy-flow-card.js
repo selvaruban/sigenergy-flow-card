@@ -237,10 +237,10 @@ const DAILY_TILES = [
 // and GRID down from the gateway and fading out at the frame's bottom edge. All lines meet at the gateway (the white
 // unit left of the SigenStor cabinet); the inverter-to-home line is a single run (no branch).
 const FLOWS = {
-    solarFlow: 'M918 201 H945 Q955 201 955 211 V366',
+    solarFlow: 'M900 201 H950 Q960 201 960 211 V366',
     inverterFlow: 'M1010 392 H975',
-    homeFlow: 'M943 392 H905 Q895 392 895 382 V350 Q895 340 885 340 H755',
-    gridFlow: 'M965 420 V590',
+    homeFlow: 'M943 392 H905 Q895 392 895 382 V350 Q895 340 885 340 H710',
+    gridFlow: 'M965 417 V577 Q965 587 955 587 H830',
 };
 // A branch continues its parent's animation from the point where it leaves the parent's path.
 const BRANCHES = {};
@@ -252,19 +252,18 @@ const GATEWAY_ENDS = { inverterFlow: 'end', homeFlow: 'start', gridFlow: 'start'
 // the inverter's pulse starts, so a pulse runs on from SOLAR too. The speed, in scene units per second, is
 // [speed][0] + [speed][1] × √(home kW), so everything runs quicker as the house uses more; [length] is in scene units.
 const PULSE = { speed: [110, 65], length: 130 };
-// Dashed callouts from each reading to the feature it describes: below the SOLAR label to the panels, below the
-// HOME label over the porch and down to its eave, across to GRID's line, and from the cabinet down and across to
-// the SigenStor text.
-const LEADERS = ['M900 88 V201', 'M710 88 V300 H760 V340', 'M830 556 H965', 'M1017 481 V561 H1027'];
+// Callouts: below the SOLAR label to the panels, straight down from the HOME label to the home flow,
+// up from the grid flow's end beside GRID, and straight down from the cabinet beside the SigenStor text.
+const LEADERS = ['M900 23 V201', 'M710 23 V340', 'M830 587 V520', 'M1017 476 V586'];
 // Reading positions: [x, y, edge], where y is the reading's top or bottom edge. [lower] places the
 // SigenStor and GRID readings: the row's left edge, each reading's left edge, and the row's bottom edge.
 // [chargers] is the left edge of the charger readings, centred vertically on CHARGER_Y: [wide, narrow].
 // With the custom photo they sit above the car, to the right of the charger; 1120/1040 shift them right while
 // keeping the text inside the protected range at the narrowest width (wide [640,1240], narrow [580,1240]).
 const READINGS = {
-    pv: [857, 16, 'top'],
-    home: [670, 16, 'top'],
-    lower: { left: 724, columns: [724, 1050], bottom: 588, start: 512 },
+    pv: [922, 16, 'top'],
+    home: [620, 16, 'top'],
+    lower: { left: 714, columns: [714, 1042], bottom: 588, start: 512 },
     chargers: [1120, 1040],
 };
 
@@ -657,7 +656,7 @@ class SigenergyFlowCard extends HTMLElement {
           <rect x="0" y="${-PHOTO.bleed}" width="${PHOTO.width}" height="${PHOTO.bleed + FADE.topEnd}" class="fadeRect" fill="url(#fadeTop)"/>
           <rect x="0" y="${FADE.bottomStart}" width="${PHOTO.width}" height="${SCENE.height - FADE.bottomStart + PHOTO.bleed}" class="fadeRect" fill="url(#fadeBottom)"/>
           <rect x="0" y="${-PHOTO.bleed}" width="520" height="${SCENE.height + 2 * PHOTO.bleed}" fill="url(#fadeLeft)"/>
-          ${LEADERS.map((d, i) => battery || i !== 3 ? `<path class="leader${i === 3 ? ' lowerLeader' : ''}" data-d="${d}" d="${d}"/>` : '').join('')}
+          ${LEADERS.map((d, i) => battery || i !== 3 ? `<path class="leader${i === 3 ? ' lowerLeader noDot' : i === 2 ? ' noDot' : ''}" data-d="${d}" d="${d}"/>` : '').join('')}
           ${flows}
         </svg>
         <div class="node weather" id="weather" hidden><button id="weatherButton" title="Show the weather forecast"><span id="weatherIcon"></span><strong id="weatherTemp"></strong></button></div>
@@ -765,7 +764,8 @@ class SigenergyFlowCard extends HTMLElement {
       .plane{position:absolute;top:0;left:0;width:${SCENE.width}px;height:${SCENE.height}px;--s:1}
       .plane>svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
       .fade{stop-color:var(--fade)}.fadeRect{opacity:var(--fade-opacity)}
-      .leader{fill:none;stroke:var(--leader);stroke-width:1;vector-effect:non-scaling-stroke;stroke-dasharray:3 5;stroke-linecap:round;opacity:.75;marker-end:url(#leaderDot)}
+      .leader{fill:none;stroke:var(--leader);stroke-width:1;vector-effect:non-scaling-stroke;stroke-linecap:round;opacity:.75;marker-end:url(#leaderDot)}
+      .leader.noDot{marker-end:none}
       .wire{fill:none;stroke:rgba(18,26,30,.4);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;transition:stroke .4s}
       .flow.active .wire{stroke:var(--wire-on)}
       .glow,.comet{fill:none;stroke:var(--comet);stroke-linecap:round;stroke-linejoin:round;display:none}
@@ -791,7 +791,7 @@ class SigenergyFlowCard extends HTMLElement {
       .node.weather button{display:flex;align-items:center;gap:calc(10px * var(--s))}.weather svg{width:clamp(30px,calc(58px * var(--s)),62px);height:clamp(30px,calc(58px * var(--s)),62px);overflow:visible}
       .sidecol{position:absolute;top:50%;transform:translateY(-50%);z-index:2;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:max(14px,calc(24px * var(--s)));min-height:calc(184px * var(--s))}
       .double #chargers{flex-direction:row;top:auto;bottom:${((SCENE.height - READINGS.lower.bottom) / SCENE.height * 100).toFixed(3)}%;transform:none;min-height:0;gap:max(14px,calc(40px * var(--s)))}
-      .lower{position:absolute;z-index:2;display:grid;align-items:start}.lower .node{position:static}.lower>.node:first-child{min-width:0;padding-left:calc(10px * var(--s));padding-right:calc(12px * var(--s))}.lower>.node:first-child em{white-space:normal}
+      .lower{position:absolute;z-index:2;display:grid;align-items:start}.lower .node{position:static}.lower>.node:first-child{min-width:0;padding-right:calc(12px * var(--s))}.lower>.node:first-child em{white-space:normal}
       .sidecol .node{position:static}
       .node button{all:unset;cursor:pointer;display:block}.node button[disabled]{cursor:default}.nobreak{white-space:nowrap}.narrow #gridButton small{white-space:normal}.node small button{display:inline}.node button:focus-visible{outline:2px solid #71d3d1}
       .sidebar{display:flex;flex-direction:column;gap:12px}.panel{background:var(--panel);border:1px solid var(--panel-line);border-radius:12px;padding:13px}
