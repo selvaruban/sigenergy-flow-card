@@ -42,7 +42,7 @@ GARAGES = {'garage_day.png': ('house_day.png', 617, [(617, 276, 626, 291)]), 'ga
 # The garage's inside (left, top, bottom) in the first photo's frame, and the difference from the photo that counts.
 GARAGE_BOX, GARAGE_DIFF = (425, 195, 385), 20
 # AVIF quality of the photos and of the charger overlays, and the encoder's speed (0 is slowest and smallest).
-QUALITY, OVERLAY_QUALITY, SPEED = 50, 80, 2
+QUALITY, OVERLAY_QUALITY, SPEED = 60, 80, 2
 WIDTH = 1676
 # The photo's rows, starting EXTRA_TOP units above the first photo's top row.
 EXTRA_TOP, ROWS = 44, 557
@@ -62,7 +62,7 @@ END = '// END ARTWORK'
 
 def extend(photo):
     w, h = photo.size
-    blur = ImageFilter.GaussianBlur(14)
+    blur = ImageFilter.GaussianBlur(8)
     top = photo.crop((0, 0, w, EDGE_ROWS)).resize((w, TOP + FEATHER), Image.BILINEAR).filter(blur)
     bottom = photo.crop((0, h - EDGE_ROWS, w, h)).resize((w, BOTTOM + FEATHER), Image.BILINEAR).filter(blur)
     canvas = Image.new('RGB', (w, TOP + h + BOTTOM))
