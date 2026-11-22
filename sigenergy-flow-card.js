@@ -264,7 +264,7 @@ const LEADERS = ['M900 88 V201', 'M710 88 V300 H760 V340', 'M830 556 H965', 'M10
 const READINGS = {
     pv: [857, 16, 'top'],
     home: [670, 16, 'top'],
-    lower: { left: 724, columns: [724, 1030], bottom: 588, start: 512 },
+    lower: { left: 724, columns: [724, 1050], bottom: 588, start: 512 },
     chargers: [1120, 1040],
 };
 
@@ -791,7 +791,7 @@ class SigenergyFlowCard extends HTMLElement {
       .node.weather button{display:flex;align-items:center;gap:calc(10px * var(--s))}.weather svg{width:clamp(30px,calc(58px * var(--s)),62px);height:clamp(30px,calc(58px * var(--s)),62px);overflow:visible}
       .sidecol{position:absolute;top:50%;transform:translateY(-50%);z-index:2;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:max(14px,calc(24px * var(--s)));min-height:calc(184px * var(--s))}
       .double #chargers{flex-direction:row;top:auto;bottom:${((SCENE.height - READINGS.lower.bottom) / SCENE.height * 100).toFixed(3)}%;transform:none;min-height:0;gap:max(14px,calc(40px * var(--s)))}
-      .lower{position:absolute;z-index:2;display:grid;align-items:start}.lower .node{position:static}.lower>.node:first-child{min-width:0;padding-right:calc(12px * var(--s))}.lower>.node:first-child em{white-space:normal}
+      .lower{position:absolute;z-index:2;display:grid;align-items:start}.lower .node{position:static}.lower>.node:first-child{min-width:0;padding-left:calc(10px * var(--s));padding-right:calc(12px * var(--s))}.lower>.node:first-child em{white-space:normal}
       .sidecol .node{position:static}
       .node button{all:unset;cursor:pointer;display:block}.node button[disabled]{cursor:default}.nobreak{white-space:nowrap}.narrow #gridButton small{white-space:normal}.node small button{display:inline}.node button:focus-visible{outline:2px solid #71d3d1}
       .sidebar{display:flex;flex-direction:column;gap:12px}.panel{background:var(--panel);border:1px solid var(--panel-line);border-radius:12px;padding:13px}
