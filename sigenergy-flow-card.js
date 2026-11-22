@@ -240,7 +240,7 @@ const FLOWS = {
     solarFlow: 'M900 201 H950 Q960 201 960 211 V366',
     inverterFlow: 'M1010 392 H975',
     homeFlow: 'M943 392 H905 Q895 392 895 382 V350 Q895 340 885 340 H710',
-    gridFlow: 'M965 417 V577 Q965 587 955 587 H830',
+    gridFlow: 'M965 417 V577 Q965 587 955 587 H730',
 };
 // A branch continues its parent's animation from the point where it leaves the parent's path.
 const BRANCHES = {};
@@ -254,7 +254,7 @@ const GATEWAY_ENDS = { inverterFlow: 'end', homeFlow: 'start', gridFlow: 'start'
 const PULSE = { speed: [110, 65], length: 130 };
 // Callouts: below the SOLAR label to the panels, straight down from the HOME label to the home flow,
 // up from the grid flow's end beside GRID, and straight down from the cabinet beside the SigenStor text.
-const LEADERS = ['M900 23 V201', 'M710 23 V340', 'M830 587 V520', 'M1017 476 V586'];
+const LEADERS = ['M900 23 V201', 'M710 23 V340', 'M730 587 V495', 'M1017 468 V583'];
 // Reading positions: [x, y, edge], where y is the reading's top or bottom edge. [lower] places the
 // SigenStor and GRID readings: the row's left edge, each reading's left edge, and the row's bottom edge.
 // [chargers] is the left edge of the charger readings, centred vertically on CHARGER_Y: [wide, narrow].
@@ -262,7 +262,7 @@ const LEADERS = ['M900 23 V201', 'M710 23 V340', 'M830 587 V520', 'M1017 476 V58
 // keeping the text inside the protected range at the narrowest width (wide [640,1240], narrow [580,1240]).
 const READINGS = {
     pv: [922, 16, 'top'],
-    home: [620, 16, 'top'],
+    home: [735, 16, 'top'],
     lower: { left: 714, columns: [714, 1042], bottom: 588, start: 512 },
     chargers: [1120, 1040],
 };
@@ -791,7 +791,7 @@ class SigenergyFlowCard extends HTMLElement {
       .node.weather button{display:flex;align-items:center;gap:calc(10px * var(--s))}.weather svg{width:clamp(30px,calc(58px * var(--s)),62px);height:clamp(30px,calc(58px * var(--s)),62px);overflow:visible}
       .sidecol{position:absolute;top:50%;transform:translateY(-50%);z-index:2;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:max(14px,calc(24px * var(--s)));min-height:calc(184px * var(--s))}
       .double #chargers{flex-direction:row;top:auto;bottom:${((SCENE.height - READINGS.lower.bottom) / SCENE.height * 100).toFixed(3)}%;transform:none;min-height:0;gap:max(14px,calc(40px * var(--s)))}
-      .lower{position:absolute;z-index:2;display:grid;align-items:start}.lower .node{position:static}.lower>.node:first-child{min-width:0;padding-right:calc(12px * var(--s))}.lower>.node:first-child em{white-space:normal}
+      .lower{position:absolute;z-index:2;display:grid;align-items:start}.lower .node{position:static}.lower>.node:first-child{min-width:0;padding-left:calc(43px * var(--s));padding-right:calc(12px * var(--s));transform:translateY(calc(-20px * var(--s)))}.lower>.node:first-child em{white-space:normal}
       .sidecol .node{position:static}
       .node button{all:unset;cursor:pointer;display:block}.node button[disabled]{cursor:default}.nobreak{white-space:nowrap}.narrow #gridButton small{white-space:normal}.node small button{display:inline}.node button:focus-visible{outline:2px solid #71d3d1}
       .sidebar{display:flex;flex-direction:column;gap:12px}.panel{background:var(--panel);border:1px solid var(--panel-line);border-radius:12px;padding:13px}
@@ -2159,10 +2159,10 @@ class SigenergyFlowCard extends HTMLElement {
         const dcState = dc === null ? '' : dc > 0.025 ? 'Charging' : dc < -0.025 ? 'Discharging' : '';
         const dcSocText = dcsoc === null || (dcsoc === 0 && !dcState) ? '' : `Vehicle SOC ${dcsoc.toFixed(0)}%`;
         this._parts('dcSoc', [dcState, dcSocText]);
-        // SigenStor's AC output: solar less battery charging (positive battery power) less DC charging.
-        const inverter = pv !== null && bat !== null ? pv - bat - (dc ?? 0) : home !== null && grid !== null ? home - grid : null;
+        // The battery link follows the battery: positive power charges it, so the pulse runs from the gateway to
+        // the cabinet; negative power discharges it, so the pulse runs from the cabinet to the gateway.
         this._flow('solarFlow', pv);
-        this._flow('inverterFlow', inverter);
+        this._flow('inverterFlow', bat === null ? null : -bat);
         this._flow('homeFlow', home);
         this._flow('gridFlow', grid === null ? null : -grid);
         this._updatePv();
