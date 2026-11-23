@@ -237,7 +237,7 @@ const DAILY_TILES = [
 // and GRID down from the gateway and fading out at the frame's bottom edge. All lines meet at the gateway (the white
 // unit left of the SigenStor cabinet); the inverter-to-home line is a single run (no branch).
 const FLOWS = {
-    solarFlow: 'M900 201 H950 Q960 201 960 211 V366',
+    solarFlow: 'M900 156 H950 Q960 156 960 166 V369',
     inverterFlow: 'M1010 392 H975',
     homeFlow: 'M943 392 H905 Q895 392 895 382 V350 Q895 340 885 340 H710',
     gridFlow: 'M965 417 V577 Q965 587 955 587 H730',
@@ -255,7 +255,7 @@ const PULSE = { speed: [110, 65], length: 130 };
 // Callouts: below the SOLAR label to the panels, straight down from the HOME label to the home flow,
 // up from the grid flow's end beside GRID, straight down from the cabinet beside the SigenStor text, and up from
 // the AC charger beside its reading.
-const LEADERS = ['M900 23 V201', 'M710 23 V340', 'M730 587 V498', 'M1017 468 V583', 'M1068 364 V267'];
+const LEADERS = ['M900 23 V156', 'M710 23 V340', 'M730 587 V498', 'M1017 468 V583', 'M1068 364 V267'];
 // Reading positions: [x, y, edge], where y is the reading's top or bottom edge. [lower] places the
 // SigenStor and GRID readings: the row's left edge, each reading's left edge, and the row's bottom edge.
 // [chargers] is the left edge of the charger readings, centred vertically on CHARGER_Y: [wide, narrow].
